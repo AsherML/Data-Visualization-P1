@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://d3js.org/topojson.v3.min.js"></script>
+    </head>
+    <body>
+        <svg width="800" height="300" id="parkMap">
+
+        </svg>
+        <script>
+            let svg=d3.select("#parkMap")
+            let width=svg.width;
+            let height=svg.height;
+
+            let squirrelData=svg.append("g").attr("id", "squirrelData")
+            let parkMap=svg.append("g").attr("id", "parkMap")
+            let annotations=svg.append("g").attr("id", "annotations")
+
+
+
+            const mapSquirrels = async function(){
+                const squirrelData=await d3.csv("squirrelData.csv", d3.autoType);
+                console.log(squirrelData);
+
+                let xExtent=d3.extent(data, d=>d["X"]);
+                let yExtent=d3.extent(data, d=>d["Y"]);
+
+                let xScale=d3.scaleLinear().domain(xExtent).range([0,])
+                let yScale=d3.scaleLinear().domain(yExtent)
+
+                d3.selectAll("circle.squirrelCircle").data(squirrelData)
+                    .join('circle')
+                    .attr("r", "3")
+                    .attr("class","squirrelCircle")
+                    .cx
+
+            }
+            mapSquirrels();
+        </script> 
+    </body>
+</html>
