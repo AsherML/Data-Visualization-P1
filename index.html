@@ -15,34 +15,37 @@
         opacity: 0.5;
         position: absolute;
         transform: rotate(10deg);
-        margin-top: 500px;
+        margin-top: 460px;
         margin-left: -140px;
       }
       h2 {
         position: relative;
         z-index: 1;
       }
+      .reactions {
+        position: absolute;
+        top: 530px;
+      }
     </style>
   </head>
   <body>
     <h2>Squirrel Activity in Central Park, New York</h2>
+    <h2 class="reactions">Squirrel Reactions to Humans in Central Park, New York</h2>
     <img src="centralpark.jpg" width="1200" height="575" class="map"></img>
-    <svg width="900" height="350" id="parkMap" style="position:absolute"></svg>
-
+    <img src="centralpark.jpg" width="1200" height="575" class="mapTwo"></img>
+    <svg width ="900" height ="1100" id ="all" style="position:absolute">
+      <svg width="900" height="350" id="parkMap" style="position:absolute"></svg>
+      <svg y="550" width="900" height="350" id="reactionMap"  style="position:absolute"></svg>
+    </svg>
     <script>
       let svg=d3.select("#parkMap")
       let width=svg.width;
       let height=svg.height;
-      console.log(width);
-      console.log(height);
 
       let squirrelDataArea=svg.append("g").attr("id", "squirrelDataArea")
-      let parkMapArea=svg.append("g").attr("id", "parkMapArea")
-      let annotationsArea=svg.append("g").attr("id", "annotationsArea")
 
       const mapSquirrels = async function(){
         const squirrelData=await d3.csv("squirrelData.csv", d3.autoType);
-        console.log(squirrelData);
 
         let xExtent=d3.extent(squirrelData, d=>d["X"]);
         let yExtent=d3.extent(squirrelData, d=>d["Y"]);
@@ -50,7 +53,6 @@
 
         let xScale=d3.scaleLinear().domain(xExtent).range([0,900]);
         let yScale=d3.scaleLinear().domain(yExtent).range([350,0]);
-        console.log(squirrelData[0]['X']);
         squirrelData.category = "Activities";
         squirrelData.forEach((d, i) => {
           if (d["Running"] == true) {
@@ -99,6 +101,62 @@
             .text(function(d){return d})
       }
       mapSquirrels();
+
+      let svgReaction = d3.select("#reactionMap");
+      let reactionArea = svgReaction.append("g").attr("id", "reactionArea");
+      const mapReaction = async function(){
+        const reactionData = await d3.csv("squirrelData.csv", d3.autoType);
+
+        let xExtent=d3.extent(reactionData, d=>d["X"]);
+        let yExtent=d3.extent(reactionData, d=>d["Y"]);
+
+        let xScale=d3.scaleLinear().domain(xExtent).range([0,900]);
+        let yScale=d3.scaleLinear().domain(yExtent).range([350,0]);
+
+        reactionData.category = "Reactions";
+
+        reactionData.forEach((d, i) => {
+          if (d["Approaches"] == true) {
+            d["Reactions"] = 1;
+          } else if (d["Indifferent"] == true) {
+            d["Reactions"] = 2;
+          } else if (d["Runs from"] ==true) {
+            d["Reactions"] = 3;
+          } else if (d["Other Interactions"] != null) {
+            d["Reactions"] = 4;
+          } else {
+            d["Reactions"] = 0;
+          }
+        });
+        var colors = d3.scaleQuantize().domain([0, 4]).range(["#a569bd", "#3498db", "#f39c12", "#17202a"]);
+        reactionArea.selectAll("circle.reactionCircle").data(reactionData)
+            .join('circle')
+            .attr("r", "3")
+            .attr("fill", d=>colors(d["Reactions"]))
+            .attr("class","reactionCircle")
+            .attr("cx", d=>xScale(d['X']))
+            .attr("cy", d=>yScale(d['Y']))
+            .attr("opacity", "0.6");
+
+        var keys = ["Approaches", "Indifferent", "Runs from", "Other Interactions"]
+        var keyColor = d3.scaleOrdinal().domain(keys).range(["#a569bd", "#3498db", "#f39c12", "#17202a"]);
+        svgReaction.selectAll("dots").data(keys)
+          .enter()
+          .append("circle")
+            .attr("cx", 20)
+            .attr("cy", function(d,i){ return 20 + i * 25})
+            .attr("r", 7)
+            .style("fill", d => keyColor(d))
+        svgReaction.selectAll("labels")
+          .data(keys)
+          .enter()
+          .append("text")
+            .attr("x", 30)
+            .attr("y", function(d,i){return 25 + i * 25})
+            .style("fill", d => keyColor(d))
+            .text(function(d){return d})
+      }
+      mapReaction();
     </script>
   </body>
 </html>
