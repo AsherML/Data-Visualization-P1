@@ -26,6 +26,10 @@
         position: absolute;
         top: 530px;
       }
+      a {
+        position: absolute;
+        top: 1100px;
+      }
     </style>
   </head>
   <body>
@@ -71,8 +75,79 @@
             d["Activities"] = 0;
           }
         });
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 20)
+          .attr('r', "8")
+          .style("fill", "#5E4FA2")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 42)
+          .attr('r', "8")
+          .style("fill", "#EC7063")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 64)
+          .attr('r', "8")
+          .style("fill", "#229954")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 86)
+          .attr('r', "8")
+          .style("fill", "#273746")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 108)
+          .attr('r', "8")
+          .style("fill", "#b7950b")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 130)
+          .attr('r', "8")
+          .style("fill", "#5DADE2")
+        squirrelDataArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 152)
+          .attr('r', "8")
+          .style("fill", "#641e16")
+
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 25)
+          .text("No Activity")
+          .style("fill", "#5E4FA2")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 47)
+          .text("Running")
+          .style("fill", "#EC7063")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 69)
+          .text("Chasing")
+          .style("fill", "#229954")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 91)
+          .text("Climbing")
+          .style("fill", "#273746")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 113)
+          .text("Eating")
+          .style("fill", "#b7950b")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 135)
+          .text("Foraging")
+          .style("fill", "#5DADE2")
+        squirrelDataArea.append("text")
+          .attr("x", 30)
+          .attr("y", 157)
+          .text("Other Activities")
+          .style("fill", "#641e16")
         var colors = d3.scaleQuantize().domain([0, 6]).range(["#5E4FA2", "#EC7063", "#229954", "#273746", "#b7950b",
-        "#5DADE2", "#707B7C"]);
+        "#5DADE2", "#641e16"]);
         squirrelDataArea.selectAll("circle.squirrelCircle").data(squirrelData)
             .join('circle')
             .attr("r", "3")
@@ -81,24 +156,6 @@
             .attr("cx", d=>xScale(d['X']))
             .attr("cy", d=>yScale(d['Y']))
             .attr("opacity", "0.6");
-        var keys = ["Running", "Chasing", "Climbing", "Eating", "Foraging", "Other Activities"]
-        var keyColor = d3.scaleOrdinal().domain(keys).range(["#5E4FA2", "#EC7063", "#229954", "#273746", "#b7950b",
-        "#5DADE2", "#707B7C"]);
-        svg.selectAll("dots").data(keys)
-          .enter()
-          .append("circle")
-            .attr("cx", 20)
-            .attr("cy", function(d,i){ return 20 + i * 25})
-            .attr("r", 7)
-            .style("fill", d => keyColor(d))
-        svg.selectAll("labels")
-          .data(keys)
-          .enter()
-          .append("text")
-            .attr("x", 30)
-            .attr("y", function(d,i){return 25 + i * 25})
-            .style("fill", d => keyColor(d))
-            .text(function(d){return d})
       }
       mapSquirrels();
 
@@ -128,7 +185,7 @@
             d["Reactions"] = 0;
           }
         });
-        var colors = d3.scaleQuantize().domain([0, 4]).range(["#a569bd", "#3498db", "#f39c12", "#17202a"]);
+        var colors = d3.scaleQuantize().domain([0, 4]).range(["#a569bd", "#3498db", "#f39c12", "#17202a", "#e74c3c"]);
         reactionArea.selectAll("circle.reactionCircle").data(reactionData)
             .join('circle')
             .attr("r", "3")
@@ -138,25 +195,60 @@
             .attr("cy", d=>yScale(d['Y']))
             .attr("opacity", "0.6");
 
-        var keys = ["Approaches", "Indifferent", "Runs from", "Other Interactions"]
-        var keyColor = d3.scaleOrdinal().domain(keys).range(["#a569bd", "#3498db", "#f39c12", "#17202a"]);
-        svgReaction.selectAll("dots").data(keys)
-          .enter()
-          .append("circle")
-            .attr("cx", 20)
-            .attr("cy", function(d,i){ return 20 + i * 25})
-            .attr("r", 7)
-            .style("fill", d => keyColor(d))
-        svgReaction.selectAll("labels")
-          .data(keys)
-          .enter()
-          .append("text")
-            .attr("x", 30)
-            .attr("y", function(d,i){return 25 + i * 25})
-            .style("fill", d => keyColor(d))
-            .text(function(d){return d})
+        reactionArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 20)
+          .attr('r', "8")
+          .style("fill", "#a569bd")
+        reactionArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 42)
+          .attr('r', "8")
+          .style("fill", "#3498db")
+        reactionArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 64)
+          .attr('r', "8")
+          .style("fill", "#f39c12")
+        reactionArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 86)
+          .attr('r', "8")
+          .style("fill", "#17202a")
+        reactionArea.append("circle")
+          .attr("cx", 20)
+          .attr("cy", 108)
+          .attr('r', "8")
+          .style("fill", "#e74c3c")
+
+        reactionArea.append("text")
+          .attr("x", 30)
+          .attr("y", 25)
+          .text("No Reaction")
+          .style("fill", "#a569bd")
+        reactionArea.append("text")
+          .attr("x", 30)
+          .attr("y", 47)
+          .text("Approaches")
+          .style("fill", "#3498db")
+        reactionArea.append("text")
+          .attr("x", 30)
+          .attr("y", 69)
+          .text("Indifferent")
+          .style("fill", "#f39c12")
+        reactionArea.append("text")
+          .attr("x", 30)
+          .attr("y", 91)
+          .text("Runs from")
+          .style("fill", "#17202a")
+        reactionArea.append("text")
+          .attr("x", 30)
+          .attr("y", 113)
+          .text("Other interactions")
+          .style("fill", "#e74c3c")
       }
       mapReaction();
     </script>
+    <cite><a href="https://www.lonelyplanet.com/articles/the-detour-central-park-new-york">Image reference</a></cite>
   </body>
 </html>
